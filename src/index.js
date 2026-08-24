@@ -160,7 +160,7 @@ async function runImap() {
         });
         while (client.usable) await new Promise(resolve => setTimeout(resolve, 30000));
       } finally { lock.release(); }
-    } catch (err) { console.error('IMAP connection error:', err.message); }
+    } catch (err) { console.error('IMAP connection error FULL:', err.); }
     finally { try { await client.logout(); } catch (_) {} }
     console.log('Reconnecting to Gmail in 15 seconds...');
     await new Promise(resolve => setTimeout(resolve, 15000));
