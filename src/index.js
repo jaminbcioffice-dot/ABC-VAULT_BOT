@@ -131,11 +131,20 @@ async function processMessage(client, uid) {
 async function scanRecent(client) {
   const lock = await client.getMailboxLock('INBOX');
   try {
-    const uids = await client.search({ since: new Date(Date.now() - 24 * 3600_000) });
+    const uids = await client.search({
+      since: new Date(Date.now() - 24 * 3600_000)
+    });
+
+    // On startup/reconnect, remember existing emails without
+    // sending Discord alerts for them.
     for (const uid of uids.slice(-100)) {
-      try { await processMessage(client, uid); } catch (err) { console.error(`Error processing UID ${uid}:`, err.message); }
+      seen.set(String(uid), Date.now());
     }
-  } finally { lock.release(); }
+
+    console.log(`Startup scan: marked ${uids.length} existing emails as seen`);
+  } finally {
+    lock.release();
+  }
 }
 
 async function runImap() {
