@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "ABC Vault Reload Watcher",
+  "version": "1.0.0",
+  "description": "Watches the visible ABC Vault page for inventory-lineup changes and sends a notification to your private alert bot.",
+  "permissions": [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://theabcvault.com/*",
+    "https://*.onrender.com/*",
+    "https://*.railway.app/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://theabcvault.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "ABC Vault Reload Watcher"
+  }
+}

@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: abc-vault-discord-bot
+    runtime: docker
+    plan: starter
+    healthCheckPath: /health
+    autoDeploy: true
