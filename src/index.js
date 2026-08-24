@@ -86,17 +86,13 @@ async function sendDiscord(embed) {
 }
 
 async function postDiscordAlert(mail) {
-  const safeLink = findSafeVaultLink(mail);
-  const fields = [
-    { name: 'Status', value: 'ABC Vault invitation detected', inline: false },
-    { name: 'Received', value: mail.date ? new Date(mail.date).toLocaleString('en-US', { timeZone: 'America/New_York' }) + ' ET' : 'Just now', inline: true }
-  ];
-  if (config.includeSubject && mail.subject) fields.push({ name: 'Email subject', value: mail.subject.slice(0, 1000), inline: false });
-  fields.push({ name: 'Important', value: 'Open your email/Vault manually. This bot does **not** enter the Vault, reveal your key, add items to cart, or purchase anything.', inline: false });
-  const embed = { title: '🚨 ABC VAULT INVITE ALERT 🚨', description: 'A likely ABC Fine Wine & Spirits Vault invitation just hit the monitored Gmail account.', fields, timestamp: new Date().toISOString(), footer: { text: 'ABC Vault Discord Alert Bot' } };
-  if (safeLink) embed.url = safeLink;
+  const embed = {
+    title: '🚨 ABC VAULT INVITE! 🚨',
+    description: `📩 **${mail.subject || 'Vault invitation detected'}**\n\n**CHECK YOUR EMAIL NOW!**`
+  };
+
   await sendDiscord(embed);
-  console.log(`Vault invite alert sent: ${mail.subject || '(no subject)'}`);
+  console.log('Vault invite alert sent');
 }
 
 async function postReloadAlert(data) {
